@@ -1,0 +1,33 @@
+[package]
+name = "sem-viewer"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "sem_viewer_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+tauri = { version = "1.6", features = [
+    "dialog-open", "dialog-save",
+    "fs-read-file", "fs-write-file", "fs-exists",
+    "path-all", "shell-open",
+] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+image = { version = "0.25", features = ["tiff", "png", "jpeg"] }
+rayon = "1.8"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
